@@ -25,7 +25,7 @@
                 // 构造器调用几次？写了一次weather标签那么就是被执行了一次
                 constructor(props) {
                     super(props)
-                    // 初始化状态
+                    // 构造器1：初始化状态
                     this.state = { isHot: false, wind: '微风' }
                     this.changeWeather = this.changeWeather.bind(this)
                     // 这里顺着原型找到这个changeWeather然后生成了一个changeWeather，把这个changeWeather绑定到了这个实例上。以后调用的时候就不回去原型找这个方法了，而会去实例找这个被改过了this的方法。
@@ -47,6 +47,7 @@
                     // this.state.isHot = !isHot
                 }
                 render() {
+                    // render是从状态中读取东西，展示
                     // render调用了几次？1+n次：1是初始化的那次，n是之后的状态更新的次数
                     console.log(this)
                     const { isHot, wind } = this.state

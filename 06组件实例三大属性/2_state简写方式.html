@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1使用jsx创建虚拟DOM</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            class Weather extends React.Component {
+                // constructor(props) { constructor不用写了，直接写就可以
+                //     super(props)
+                // 这里不想写怎么办呢？
+                // this.state = { isHot: false, wind: '微风' }
+                // this.changeWeather = this.changeWeather.bind(this) //为什么不用这个写法呢？因为如果有很多的函数的话，会出现非常多的bind的代码，需要一个精简的方式来解决这个问题
+                // }
+
+                state = { isHot: false, wind: 'breeze yeah!' } // 这么写也是完全可以的，可以说是简写了
+
+                // 如果把函数这样直接写进来这里而不去bind他的话，this的指向就会出问题。就无法使用这个方法了。因为这里是作为一个事件回调使用的。类里边的方法本身开了严格模式所以丢了this。而这么叫函数，通过事件回调使用的时候是非常多的。
+                // changeWeather = function () {} 即使这么写也只是把这个方法从原型对象换到了，实例对象上而已。并没有改变很大。
+                // 自定义方法-要使用赋值语句加箭头函数的方法哦。箭头函数去找外层函数的this，这就就是Weather来用的。所以可以的。
+                changeWeather = () => {
+                    console.log(this)
+
+                    this.setState({ isHot: !this.state.isHot })
+                }
+                render() {
+                    console.log(this)
+                    const { isHot, wind } = this.state
+                    return (
+                        <h1 id="title" onClick={this.changeWeather}>
+                            今天天气很{isHot ? '炎热' : '凉爽'}啊，{wind}
+                        </h1>
+                    )
+                }
+            }
+            ReactDOM.render(<Weather />, document.getElementById('test'))
+        </script>
+    </body>
+</html>

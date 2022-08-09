@@ -66,6 +66,22 @@
             const s1 = new Student('xiaozhang', 15, 'grade 1')
             console.log(s1)
             s1.speak()
+
+            class Car {
+                constructor(name, price) {
+                    this.name = name
+                    this.price = price
+                    // this.wheel = 4
+                }
+                // 类中可以直接写赋值语句
+                a = 1 // 这里的含义是给类了一个属性值，名为a，值为1
+                wheel = 4 // 这么说的话，轮子的值可以这么写，因为写死了。如果不是写死了就还是得需要写一下构造器
+            }
+
+            c1 = new Car('benchi 763', 199)
+            c2 = new Car('baoma', 299)
+            console.log(c1)
+            console.log(c2)
         </script>
     </body>
 </html>
