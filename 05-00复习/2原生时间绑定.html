@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <button id="btn1">1</button>
+        <button id="btn2">2</button>
+        <button id="btn3" onclick="handleClick()">3</button>
+        <!-- 原生这里是吧onclick的里边的handleClick()当成javascript来执行了 -->
+        <script type="text/javascript">
+            // 三种原生的javascript的绑定按键功能方式
+            btn1 = document.getElementById('btn1')
+            btn1.addEventListener('click', function (e) {
+                console.log('btn1 clicked')
+            })
+            btn2 = document.getElementById('btn2')
+            btn2.onclick = function (e) {
+                console.log('btn2 clicked')
+            }
+            function handleClick() {
+                console.log('btn3 clicked')
+            }
+        </script>
+    </body>
+</html>

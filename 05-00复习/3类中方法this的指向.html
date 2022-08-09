@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            class Person {
+                constructor(name, age) {
+                    this.name = name
+                    this.age = age
+                }
+                speak() {
+                    // speak方法放在了那里？ 类的原型对象上，供实例使用
+                    // 通过student实例调用speak时候，speak中的this就是student实例
+                    console.log(this)
+                }
+            }
+
+            const p1 = new Person('tome', 18)
+            p1.speak() // 通过实例调用speak方法
+            const x = p1.speak
+            x() // undefined
+
+            function demo() {
+                'use strict' // 类中是这种严格模式，所以是undefined
+                console.log(this)
+            }
+
+            function demo2() {
+                console.log(this) // 这里就是window的全局变量
+            }
+            demo2()
+        </script>
+    </body>
+</html>

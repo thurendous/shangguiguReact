@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1使用jsx创建虚拟DOM</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            //1. 创建函数式组件 -> 首字母一定要大写
+            class Weather extends React.Component {
+                // 构造器调用几次？写了一次weather标签那么就是被执行了一次
+                constructor(props) {
+                    super(props)
+                    // 初始化状态
+                    this.state = { isHot: false, wind: '微风' }
+                    this.changeWeather = this.changeWeather.bind(this)
+                    // 这里顺着原型找到这个changeWeather然后生成了一个changeWeather，把这个changeWeather绑定到了这个实例上。以后调用的时候就不回去原型找这个方法了，而会去实例找这个被改过了this的方法。
+                    // 记住了，如果没有这一行的话，那么this.changeWeather执行的就是原型的函数了，不是通过实例调用的。
+                    // this.demo = this.changeWeather.bind(this)
+                    console.log('constructor implemented')
+                }
+                // 通过changeWeather调用changeWeather时候，changeWeather中的this就是Weather实例了
+                // changeWeather调用几次？点几次调用几次
+                changeWeather() {
+                    // 由于changeWeather是作为onClick的回调，所以不是由实例调用而是直接调用。
+                    // 类中的方法默认开启了局部的严格模式
+                    // console.log(this)
+                    // 严重注意： 状态必须使用setState来修改，且更新是一种合并，不是替换，只要你合法的方式来修改这个state，那么
+                    this.setState({ isHot: !this.state.isHot })
+                    console.log('changeWeather')
+                    // 严重注意： 状态（state）不可以直接修改，需要借助一个内置的api去更改
+                    // const isHot = this.state.isHot // 错误写法
+                    // this.state.isHot = !isHot
+                }
+                render() {
+                    // render调用了几次？1+n次：1是初始化的那次，n是之后的状态更新的次数
+                    console.log(this)
+                    const { isHot, wind } = this.state
+                    return (
+                        <h1 id="title" onClick={this.changeWeather}>
+                            {/* <h1 id="title" onClick={this.demo}>*/}
+                            {/* 这里onClick的赋值的地方，需要的是把函数的返回值赋值过来，结果如果是demo()的话，那么赋值就是demo函数的返回值，结果是undefined
+                            这里的this.changeWeather根本不是通过实例调用了*/}
+                            今天天气很{isHot ? '炎热' : '凉爽'}啊，{wind}
+                        </h1>
+                    )
+                }
+            }
+            ReactDOM.render(<Weather />, document.getElementById('test'))
+            // first kind
+            // const title = document.getElementById('title')
+            // title.addEventListener('click', function () {
+            //     console.log('title is clicked')
+            // })
+
+            // 2nd kind
+            // const title = document.getElementById('title')
+            // title.onclick = () => {
+            //     console.log('title is clicked2')
+            // }
+
+            // 上边的两种可以用，但是因为我们在学习react所以尽量不要用document这个取dom方法
+            // 3rd kind
+
+            // onclick -> onClick, onblur -> onBlur
+            // const w = new Weather()
+            // w.changeWeather()
+        </script>
+    </body>
+</html>
