@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // 这里是类基础知识
+            class Person {
+                constructor(name, age) {
+                    this.name = name
+                    this.age = age
+                    // 构造器的this是类的实例对象
+                }
+                // 一般方法
+                speak() {
+                    // speak方法放在了类的原型对象上
+                    // 通过实例调用speak时，speak中的this就是Person实例
+
+                    console.log(this)
+                    console.log(`my name is ${this.name}. I am ${this.age}`)
+                }
+            }
+            class Dog {}
+            // 创建一个person的实例对象
+            const p1 = new Person('jarry', 18)
+            const p2 = new Person('mark', 22)
+            console.log(p1) // Person {name: 'jarry', age: 18}
+            console.log(p2) // Person {name: 'mark', age: 22}
+            p1.speak()
+            p2.speak()
+            // my name is undefined. I am undefined
+            p1.speak.call({ a: 1, b: 2 }) // -> call有一个特性，传入什么就更改this为为什么
+            // 所以speak中的this是什么需要看怎么调用的。
+            p1.speak.call({ name: 1, age: 2 }) // my name is 1. I am 2
+
+            // 说说继承的概念 -> 学习类式组件的准备
+            /*
+                总结：
+                1.类中的构造器不是必须得写的。要对实例进行一些初始化的操作的时候才写。如增加一些属性
+                2.如果A类继承了B类，且A类中写了构造器，那么A类构造器中的super是必须调用的
+                3.类的定义的方法，都是放在了类的原型对象上，提供实例去使用
+            */
+            // 创建一个student类，继承Person类
+            class Student extends Person {
+                constructor(name, age, grade) {
+                    super(name, age) // 你写了一个继承的模式，student继承Person，必须写上super，不写就会报错。super还必须放在所有人之前
+                    // 有一个情况不需要写super就是不写构造器
+                    this.grade = grade
+                }
+                // 重写方法
+                speak() {
+                    console.log(
+                        `my name is ${this.name}. I am ${this.age}. I am ${this.grade}`
+                    )
+                }
+                study() {
+                    // study放在了那里，类的原型对象上，供谁使用？
+                    console.log(`我很努力学习的`)
+                }
+            }
+
+            const s1 = new Student('xiaozhang', 15, 'grade 1')
+            console.log(s1)
+            s1.speak()
+        </script>
+    </body>
+</html>

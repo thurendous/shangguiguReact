@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1使用jsx创建虚拟DOM</title>
+        <style>
+            .title {
+                background-color: orange;
+                width: 400px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            const myId = 'atGuiGu'
+            const myData = 'HelLo, rEaCt'
+
+            //1. 创建虚拟dom
+            const VDOM = (
+                <div>
+                    <h2 className="title" id={myId.toLowerCase()}>
+                        <span
+                            id="atguigu"
+                            style={{ color: 'white', fontSize: '50px' }}
+                        >
+                            {myData.toLowerCase()}
+                        </span>
+                    </h2>
+                    <h2 className="title" id={myId.toLowerCase() + '2'}>
+                        <span
+                            id="atguigu"
+                            style={{ color: 'white', fontSize: '50px' }}
+                        >
+                            {myData.toLowerCase()}
+                        </span>
+                    </h2>
+                    <input type="text" />
+                </div>
+            ) /* 此处一定不能写字符串 */
+            // 2. 渲染虚拟dom到页面
+            ReactDOM.render(/* 容器 */ VDOM, document.getElementById('test'))
+            /*
+                jsx语法规则：
+                1. 定义虚拟DOm的时候，不要写引号
+                2. 标签中混入js表达式的时候，要用{}。意味着不可以使用js代码
+                3. className才是class指定的方法 -> class是es的类的关键词所以不能写
+                4. 这里注意写style的时候，需要双重的花括号，一层是表述要写js了，另一层是表示用object代表style属性的表述 {{key: value}}
+                5. JSX内的根标签只能有一个，不能写多个跟标签，所以得外加一个框div
+                6. 组件的话，第一个字母应该得大写
+                   （1）如果小写字母开头，那么就是html的元素，若无此类的标签就会报错
+                   （2）如果是大写字母开头，那么就是component了 
+                7. 标签的话，必须要闭合
+            */
+        </script>
+    </body>
+</html>
