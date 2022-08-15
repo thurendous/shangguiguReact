@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>2使用js创建虚拟DOM</title>
+        <title>2JSを使ってバーチャルDOMを作成する</title>
     </head>
     <body>
         <div id="test"></div>
@@ -20,15 +20,16 @@
         <!-- <script type="text/javascript" src="../js/babel.min.js"></script> -->
 
         <script type="text/javascript">
-            //1. 创建虚拟dom
+            //1. バーチャルDOMを作成する
             const VDOM = React.createElement(
                 'h1',
                 { id: 'title' },
                 React.createElement('span', {}, 'hello react')
             )
-            // 这个方法，嵌套一个span就已经如此难写了，如果多个嵌套下去就不行了
-            // 2. 渲染虚拟dom到页面
+            // 2. バーチャルDOMをレンダリングする
             ReactDOM.render(/* 容器 */ VDOM, document.getElementById('test'))
+
+            // 上記でわかるように、JSで作るのとJSXでバーチャルDOMを作るのと同じとなる。実はJSXで作る方法はJSで作る方法のsyntax sugarだそうだ
         </script>
     </body>
 </html>

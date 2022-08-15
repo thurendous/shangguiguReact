@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>回调ref回调次数问题</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            //1. 创建组件
+            class Demo extends React.Component {
+                state = { isHot: true }
+                showData = () => {
+                    const { input1 } = this
+                    console.log(input1.value)
+                }
+                changeWeather = () => {
+                    this.setState({ isHot: !this.state.isHot })
+                }
+                saveInput = (c) => {
+                    this.input1 = c
+                    console.log('@', c)
+                } // 这么(类的绑定函数)写的话，无论你如何切换也不会再重复呼叫这个函数了。跟下边的commnet掉的input不同
+                render() {
+                    const { isHot } = this.state
+                    return (
+                        <div>
+                            <h2 onClick={this.changeWeather}>
+                                今天天气很{isHot ? '炎热' : '凉爽'}
+                            </h2>
+                            {/* <input
+                                ref={(currentNode) => {
+                                    this.input1 = currentNode
+                                    console.log('@', currentNode)
+                                }} // 这种直接在标签之中定义的方式叫做内联函数
+                                type="text"
+                            /> */}
+                            <input
+                                ref={this.saveInput} // 这种叫做类的绑定函数
+                                type="text"
+                            />
+                            {/* 官方的文档说：如果 ref 回调函数是以内联函数的方式定义的，在更新过程中它会被执行两次，第一次传入参数 null，然后第二次会传入参数 DOM 元素。这是因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref 并且设置新的。通过将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。-> 这里是有一个清空的动作。
+                            以后公司开发还是自己的案例，都是直接写内联函数就可以 */}
+                            <button onClick={this.showData}>
+                                点我提示输入的数据
+                            </button>
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Demo />, document.getElementById('test'))
+        </script>
+    </body>
+</html>

@@ -23,10 +23,12 @@
             const p1 = new Person('tome', 18)
             p1.speak() // 通过实例调用speak方法
             const x = p1.speak
-            x() // undefined
+            console.log('x()')
+            x() // undefined 这里为何是undefined？因为x被设置成了一个指向的变量代表那个speak方法。不是通过实例来调用的，严格模式下就是undefined
+            //类中你定义的方法，都是严格模式，导致不会指向window。
 
             function demo() {
-                'use strict' // 类中是这种严格模式，所以是undefined
+                'use strict' // 类中是这种局部的严格模式，所以是undefined
                 console.log(this)
             }
 

@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>1使用jsx创建虚拟DOM</title>
+        <title>2state的简写方式</title>
     </head>
     <body>
         <div id="test"></div>
@@ -52,3 +52,6 @@
         </script>
     </body>
 </html>
+
+<!-- state应该是放入一个对象；组件被称为状态机（更新状态就会更新渲染界面）；
+    强烈注意：组件中render方法中的this为组件的实例对象；组件自定义的方法中this为undefined。有两个方法可以来改动这个问题：1强制绑定this，通过bind；2箭头函数   状态数据不可以直接修改和更新需要接入一个setState来更新哦-->

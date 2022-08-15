@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1回调函数形式的ref</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            // 实际上开发的时候，大家用的都是这个内链的函数形式的ref，虽然会出现连续两次被调用的情况，但是没人关注，也没什么大问题的。不用去记住那个用class绑定的方法。
+            //1. 创建组件
+            class Demo extends React.Component {
+                // 展示左侧输入框的数据
+                showData = () => {
+                    // // console.log('@')
+                    // const input = document.getElementById('input1')
+                    // console.log(input.value)
+                    const { input1 } = this
+                    alert(this.input1.value)
+                }
+                showData2 = () => {
+                    const { input2 } = this // 我们刚刚赋值了，所以可以这么写
+                    alert(this.input2.value)
+                }
+                render() {
+                    // 回调函数： 你建立的函数，你没调用，别人调用了
+                    return (
+                        <div>
+                            <input
+                                ref={
+                                    (currentNode) => (this.input1 = currentNode) // 哲理的话，参数就是当时的节点，然后我们给传入这里，内联函数
+                                    // 这里的ref里边写的函数，react会帮助我们调用的
+                                }
+                                type="text"
+                                placeholder="点击按钮提示数据"
+                            />
+                            &nbsp;
+                            <button ref="button100" onClick={this.showData}>
+                                ok
+                            </button>
+                            &nbsp;
+                            <input
+                                ref={(currentNode) =>
+                                    (this.input2 = currentNode)
+                                }
+                                type="text"
+                                onBlur={this.showData2}
+                                placeholder="失去焦点提示数据"
+                            />
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Demo />, document.getElementById('test'))
+        </script>
+    </body>
+</html>

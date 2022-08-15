@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1回调函数形式的ref</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            //1. 创建组件
+            class Demo extends React.Component {
+                /*
+                React.createRef调用后可以放回一个容器，该容器可以存储被ref所标识的节点
+                */
+                myRef = React.createRef()
+                myRef2 = React.createRef()
+                // 用几个你就需要得写几个这样的东西。
+                // 展示左侧输入框的数据
+                showData = () => {
+                    console.log(this.myRef.current.value)
+                }
+                showData2 = () => {
+                    // const { input2 } = this // 我们刚刚赋值了，所以可以这么写
+                    // alert(this.input2.value)
+
+                    console.log(this.myRef2.current.value)
+                }
+                render() {
+                    // 回调函数： 你建立的函数，你没调用，别人调用了
+                    return (
+                        <div>
+                            <input
+                                ref={this.myRef} //这里就把input节点存储到了这个容器中
+                                type="text"
+                                placeholder="点击按钮提示数据"
+                            />
+                            &nbsp;
+                            <button
+                                // ref={this.myRef} // 不能这么写的，如果这么写的话，就把之前的input的节点覆盖了，那么就是button节点了
+                                // ref="button100"
+                                onClick={this.showData}
+                            >
+                                okButton
+                            </button>
+                            &nbsp;
+                            <input
+                                ref={this.myRef2}
+                                type="text"
+                                onBlur={this.showData2}
+                                placeholder="失去焦点提示数据"
+                            />
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Demo />, document.getElementById('test'))
+        </script>
+    </body>
+</html>

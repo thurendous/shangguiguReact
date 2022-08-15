@@ -20,7 +20,7 @@
         <script type="text/javascript" src="../js/babel.min.js"></script>
 
         <script type="text/babel">
-            //1. 创建函数式组件 -> 首字母一定要大写
+            //1. 创建类式组件 -> 首字母一定要大写
             class Weather extends React.Component {
                 // 构造器调用几次？写了一次weather标签那么就是被执行了一次
                 constructor(props) {
@@ -28,22 +28,23 @@
                     // 构造器1：初始化状态
                     this.state = { isHot: false, wind: '微风' }
                     this.changeWeather = this.changeWeather.bind(this)
-                    // 这里顺着原型找到这个changeWeather然后生成了一个changeWeather，把这个changeWeather绑定到了这个实例上。以后调用的时候就不回去原型找这个方法了，而会去实例找这个被改过了this的方法。
+                    // 这里顺着原型找到这个下面定义的changeWeather然后生成了一个changeWeather，把这个changeWeather绑定到了这个实例上。把之前的changeWeather覆盖了。以后调用的时候就不回去原型找这个方法了，而会去实例找这个被改过了this的方法。
                     // 记住了，如果没有这一行的话，那么this.changeWeather执行的就是原型的函数了，不是通过实例调用的。
-                    // this.demo = this.changeWeather.bind(this)
+                    // 那样的话就还是找不到this
+                    // this.demo = this.changeWeather.bind(this)  // 也可以换个名字绑定，但是你得用这个名字调用了
                     console.log('constructor implemented')
                 }
-                // 通过changeWeather调用changeWeather时候，changeWeather中的this就是Weather实例了
+                // 如此一来，通过this.changeWeather调用changeWeather时候，changeWeather中的this就是Weather实例了
                 // changeWeather调用几次？点几次调用几次
                 changeWeather() {
-                    // 由于changeWeather是作为onClick的回调，所以不是由实例调用而是直接调用。
-                    // 类中的方法默认开启了局部的严格模式
+                    // 若没用bind方法绑定，由于changeWeather是作为onClick的回调，所以不是由实例调用而是直接类调用。
+                    // 类中的方法默认开启了局部的严格模式，所以changeWeather的this是undefined
                     // console.log(this)
                     // 严重注意： 状态必须使用setState来修改，且更新是一种合并，不是替换，只要你合法的方式来修改这个state，那么
                     this.setState({ isHot: !this.state.isHot })
                     console.log('changeWeather')
                     // 严重注意： 状态（state）不可以直接修改，需要借助一个内置的api去更改
-                    // const isHot = this.state.isHot // 错误写法
+                    // const isHot = this.state.isHot // 错误写法，不能这样直接修改
                     // this.state.isHot = !isHot
                 }
                 render() {
@@ -62,6 +63,7 @@
                 }
             }
             ReactDOM.render(<Weather />, document.getElementById('test'))
+            // 添加onclick的方法：
             // first kind
             // const title = document.getElementById('title')
             // title.addEventListener('click', function () {

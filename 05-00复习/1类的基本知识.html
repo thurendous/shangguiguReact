@@ -32,8 +32,8 @@
             console.log(p2) // Person {name: 'mark', age: 22}
             p1.speak()
             p2.speak()
-            // my name is undefined. I am undefined
-            p1.speak.call({ a: 1, b: 2 }) // -> call有一个特性，传入什么就更改this为为什么
+            p1.speak.call({ a: 1, b: 2 }) // my name is undefined. I am undefined
+            // -> call有一个特性，传入什么就更改this为什么
             // 所以speak中的this是什么需要看怎么调用的。
             p1.speak.call({ name: 1, age: 2 }) // my name is 1. I am 2
 
@@ -48,7 +48,7 @@
             class Student extends Person {
                 constructor(name, age, grade) {
                     super(name, age) // 你写了一个继承的模式，student继承Person，必须写上super，不写就会报错。super还必须放在所有人之前
-                    // 有一个情况不需要写super就是不写构造器
+                    // 有一个情况不需要写super就是不写构造器(在这个继承的class中的意思)
                     this.grade = grade
                 }
                 // 重写方法
@@ -65,7 +65,7 @@
 
             const s1 = new Student('xiaozhang', 15, 'grade 1')
             console.log(s1)
-            s1.speak()
+            s1.speak() // 重写了的方法，被覆盖了
 
             class Car {
                 constructor(name, price) {
@@ -73,15 +73,18 @@
                     this.price = price
                     // this.wheel = 4
                 }
-                // 类中可以直接写赋值语句
-                a = 1 // 这里的含义是给类了一个属性值，名为a，值为1
+                // 类中可以直接写赋值语句，给类的实例加属性的
+                a = 1 // 这里的含义是给类实例加了一个属性值，名为a，值为1
                 wheel = 4 // 这么说的话，轮子的值可以这么写，因为写死了。如果不是写死了就还是得需要写一下构造器
+                static demo = 100 // 这个就是给这个class加属性的时候使用的，这个就是静态的关键词用法
             }
 
             c1 = new Car('benchi 763', 199)
             c2 = new Car('baoma', 299)
             console.log(c1)
             console.log(c2)
+            console.log(Car.demo) // 因为赋值给了class所以可以看到
+            console.log(Car.a) // undefined
         </script>
     </body>
 </html>

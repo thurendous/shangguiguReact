@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1props基本使用</title>
+    </head>
+    <body>
+        <div id="test"></div>
+        <div id="test2"></div>
+        <div id="test3"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <!-- 引入proptypes 用于对组件标签属性进行限制 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            // 创建组件 -》 这个就是一个简写的写class的方法，全部看一遍，很好
+            class Person extends React.Component {
+                constructor(props) {
+                    // 结论： 构造器能省略就省略，这里只是较真一下
+                    super(props)
+                    console.log('constructor', this.props) // 其实这里可以直接写props，没必要非得写一个this.props
+
+                    // 构造器是可写可不写的，只有两种情况需要写构造器：
+                    // 1.如果需要用this.state来给他赋值state；2.为事件处理函数绑定到实例上
+                    // 如果你要写构造器的话，那么必须要写这个super(props),否则在构造函数中，this.props可能会出未定义的错 -> 结论：所以根本不需要写这个构造函数
+                }
+                // state = { name: 'liu', sex: 'ona', age: 19 }
+                // 这里的知识点是限制我们的props的属性、必要性的方法
+                static propTypes = {
+                    // 这么写就可以限制这个属性了
+                    name: PropTypes.string.isRequired, // 这里定义名字是必填还是字符串
+                    sex: PropTypes.string, // 限制sex为字符串
+                    age: PropTypes.number, // 限制age是数字
+                    speak: PropTypes.func, // 限制speak是函数
+                }
+                // 指定某一个属性的默认值
+                static defaultProps = {
+                    sex: 'not male or female', // sex默认值为非难非女
+                    age: 20, // 如果没有这个年龄属性就默认这个值
+                }
+                state = {} // 这样子来简写你的state
+                render() {
+                    console.log(this)
+                    // this.props.name = 'jackson' // 会报错，这里不可以随便修改props，props是只读的。
+                    const { name, age, sex } = this.props
+                    return (
+                        <ul>
+                            <li>name: {name}</li>
+                            <li>sex: {sex}</li>
+                            {/*this是组件实例对象，而props在组件实例对象上的所以 */}
+                            <li>age: {Number(age) + 1}</li>
+                            {/* 这里不是修改是运算所以不会报错 */}
+                        </ul>
+                    )
+                }
+            }
+
+            const p = { name: 'laoliu', sex: 'male' }
+            // console.log('@', ...p) //  @ 之后就没了，这里的...p使用方法是不可以随意使用的，只是适用于标签内的使用。
+
+            ReactDOM.render(
+                <Person name="jack" sex="male" />, // 如果你要传入一个数字得这么写哈
+                document.getElementById('test3')
+            )
+            ReactDOM.render(
+                <Person name={p.name} sex={p.sex} age={p.age} />,
+                document.getElementById('test')
+            )
+            ReactDOM.render(<Person {...p} />, document.getElementById('test2')) //这里非常特殊的事：这里我们使用的babel和jsx引入的时候，允许我们使用这个展开运算符来展开一个对象。（因为正常的javascript中的...p的展开对象是会报错的，只有{...p}复制一个对象是不会报错的。引起注意了）这里的{...p}的外部的花括号和我们原生的是不同的。这里是表示花括号内是javascript表达式的意思
+            // ReactDOM.render(<Person />, document.getElementById('test2'))
+        </script>
+    </body>
+</html>

@@ -26,9 +26,9 @@
                 // react.Component给我们放了很多的东西在我们的类中
                 render() {
                     // render是放在类的原型对象上，供实例使用
-                    // render中的this是谁？MyComponent的实例对象
+                    // render中的this是谁？MyComponent的组件实例对象
                     console.log('render中的this：', this)
-                    // 问题来了，我们没有new这个class？？我们看不到的位置，有一个实例然后被呼叫了这个render方法
+                    // 问题来了，我们没有new这个class？？实际上，发生事情是：我们看不到的位置，有一个实例然后被呼叫了这个render方法，react帮我们实例化了这个class component
                     return <h2>我是类定义的组件（适用于复杂组件的定义）</h2>
                 }
             }

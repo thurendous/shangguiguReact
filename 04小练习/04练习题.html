@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>1使用jsx创建虚拟DOM</title>
+        <title>1練習課題</title>
     </head>
     <body>
         <div id="test"></div>
@@ -23,10 +23,10 @@
             /*
                 一定注意区分：js语句（代码） 和 js表达式
                 1. 表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方。
-                    下面这些事表达式： 1. a 2. a+b  3. demo(1) 4. arr.map() 5. function test() {}->函数本身就是表达式
+                    下面这些是表达式： 1. a 2. a+b  3. demo(1) 4. arr.map() 5. function test() {}->函数本身就是表达式
                 2. 语句（代码）：1. if() {}  2. for() {} 3. switch() {case:xxx} 
 
-                你还需要给这个元素中的各个东西加上他们的key
+                你还需要给这个元素中的各个东西加上他们的key，不然react会报错
             */
             const list1 = ['Angular', 'React', 'Vue']
             //1. 创建虚拟dom
@@ -37,7 +37,7 @@
                         {list1.map(
                             (
                                 ele,
-                                index // 其实也不能这么写，写了这个index会可能出现严重问题
+                                index // 其实也不能这么写，写了这个index作为id会可能出现严重问题
                             ) => (
                                 <li key={index}>{ele}</li>
                             )

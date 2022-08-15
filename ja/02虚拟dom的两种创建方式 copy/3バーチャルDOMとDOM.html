@@ -4,9 +4,10 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>3虚拟DOM与真实DOM</title>
+        <title>3バーチャルDOMとDOM</title>
     </head>
     <body>
+        <!-- JSXを入れるためのHTMLのタグを準備しておく -->
         <div id="test"></div>
         <div id="demo"></div>
 
@@ -21,13 +22,13 @@
         <script type="text/javascript" src="../js/babel.min.js"></script>
 
         <script type="text/babel">
-            //1. 创建虚拟dom
+            //1. バーチャルDOMを作成する
             const VDOM = (
                 <h1 id="title">
                     <span>Hello, React</span>
                 </h1>
-            ) /* 此处一定不能写"字符串" */
-            // 2. 渲染虚拟dom到页面
+            ) /* 文字列の「"」を書かないこと */
+            // 2. バーチャルDOMをレンダリングする
             ReactDOM.render(/* 容器 */ VDOM, document.getElementById('test'))
             console.log('虚拟dom', VDOM)
             const TDOM = document.getElementById('demo')
