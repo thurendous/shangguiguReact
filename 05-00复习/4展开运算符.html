@@ -23,6 +23,7 @@
 
             let person = { name: 'tom', age: 19 }
             let person2 = { ...person } // 这个才是复制一个对象,直接写...不可以的，但是如果有一个花括号包过的话，就是可以的
+            // let person5 = ...person // -> 错误
             // let person3 = person // john 所以这个不是赋值对象哦
             // person3.name = 'John'
             console.log('person', person.name)
@@ -32,6 +33,7 @@
             // console.log(...person) // 三点运算符无法展开一个对象
             let person3 = { ...person, name: 'jack', address: 'diqiu' }
             console.log(person3)
+            console.log(person) // tom 没变化，所以是复制一个对象
         </script>
     </body>
 </html>

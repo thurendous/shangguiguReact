@@ -36,13 +36,16 @@
                     alert(this.input2.value)
                 }
                 render() {
-                    // 回调函数： 你建立的函数，你没调用，别人调用了
+                    // 回调函数： 你建立的函数，你没调用，别人react调用了
                     return (
                         <div>
                             <input
                                 ref={
-                                    (currentNode) => (this.input1 = currentNode) // 哲理的话，参数就是当时的节点，然后我们给传入这里，内联函数
-                                    // 这里的ref里边写的函数，react会帮助我们调用的
+                                    (currentNode) => {
+                                        this.input1 = currentNode
+                                        console.log('@')
+                                    } // 这里的话，参数就是当时的节点，然后我们给传入这里，内联函数
+                                    // 这里的ref里边写的函数，react会帮助我们调用的,所以@会被输出到控制台
                                 }
                                 type="text"
                                 placeholder="点击按钮提示数据"

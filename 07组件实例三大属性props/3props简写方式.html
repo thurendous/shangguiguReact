@@ -29,7 +29,7 @@
                 constructor(props) {
                     // 结论： 构造器能省略就省略，这里只是较真一下
                     super(props)
-                    console.log('constructor', this.props) // 其实这里可以直接写props，没必要非得写一个this.props
+                    console.log('constructor', props) // 其实这里可以直接写props，没必要非得写一个this.props
 
                     // 构造器是可写可不写的，只有两种情况需要写构造器：
                     // 1.如果需要用this.state来给他赋值state；2.为事件处理函数绑定到实例上

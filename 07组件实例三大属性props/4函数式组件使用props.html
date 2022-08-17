@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>1props基本使用</title>
+        <title>4函数式组件使用props</title>
     </head>
     <body>
         <div id="test"></div>
@@ -29,6 +29,7 @@
 
             // 函数式组件
             function Person(pprops) {
+                // 还可以不命名为props呢！pprps
                 // 函数组件中，所有传递的标签属性都被变成了props参数，函数式组件不可以玩state和refs
                 // props命名好像也只是一个惯例而已
                 console.log(this)
@@ -65,7 +66,7 @@
                 document.getElementById('test')
             )
             ReactDOM.render(<Person {...p} />, document.getElementById('test2')) //这里非常特殊的事：这里我们使用的babel和jsx引入的时候，允许我们使用这个展开运算符来展开一个对象。（因为正常的javascript中的...p的展开对象是会报错的，只有{...p}复制一个对象是不会报错的。引起注意了）这里的{...p}的外部的花括号和我们原生的是不同的。这里是表示花括号内是javascript表达式的意思
-            // ReactDOM.render(<Person />, document.getElementById('test2'))
+            // ReactDOM.render(<Person />, document.getElementById('test2' )) // 哲理的话，就会带入默认值了，虽然name是未定义的
         </script>
     </body>
 </html>

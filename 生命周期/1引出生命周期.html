@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1life cycle</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            // 生命周期回调函数 <=> 生命周期钩子函数 <=> 生命周期函数
+            // 因为这个函数你造的但是你没有调用，react帮你调用了。
+            // 这里的生命周期解释：在关键的时间点我给你叫一些特殊的函数，帮你做一些特殊的事情
+            // componentDidMount: render结束后立即呼叫这个函数
+            // cpmponentWillUnmount: 这里就是组件即将被卸载的时候被呼叫的
+            // 生命周期和你写代码的位置是无关的，写了react就会帮助你按顺序调用
+            class Life extends React.Component {
+                state = { opacity: 0.5 }
+                suicide = () => {
+                    // 应该在这里清空定时器，通过this找到下边设置的定时器
+                    // clearInterval(this.timer)
+                    // 这里的suicide是被用作事件的回调，所以需要
+                    // 卸载
+                    ReactDOM.unmountComponentAtNode(
+                        document.getElementById('test')
+                    )
+                }
+
+                // render有一个兄弟，他帮你调用东西，当所有的组件都
+                componentDidMount() {
+                    console.log('@')
+                    // 这里是render的兄弟，他是不需要写成箭头函数的。
+                    // 调用时机：他只会调用一次，组件挂在完毕的时候调用
+                    this.timer = setInterval(() => {
+                        // 这里这么写就把组件挂在了实例自身,因为和render相同是
+                        // console.log('@')
+                        let { opacity } = this.state
+                        opacity -= 0.1
+                        // 设置新的透明度
+                        this.setState({ opacity })
+                        if (opacity <= 0) {
+                            opacity = 1
+                            this.setState({ opacity })
+                        }
+                    }, 200)
+                }
+
+                componentWillUnmount() {
+                    clearInterval(this.timer)
+                }
+
+                // 调用时机：初始化渲染和状态更新之后
+                render() {
+                    console.log('render ')
+                    return (
+                        <div>
+                            <h2 style={{ opacity: this.state.opacity }}>
+                                React学不会咋办里？
+                            </h2>
+                            <button onClick={this.suicide}>不活了</button>
+                            <button onClick={this.action}>start</button>
+                        </div>
+                    )
+                }
+            }
+
+            // 2. 渲染虚拟dom到页面
+            ReactDOM.render(<Life />, document.getElementById('test'))
+
+            /*
+            挂载 -》 mount
+            卸载 -》 unmount
+            */
+        </script>
+    </body>
+</html>

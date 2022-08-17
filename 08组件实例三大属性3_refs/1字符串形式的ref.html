@@ -27,9 +27,11 @@
                     // // console.log('@')
                     // const input = document.getElementById('input1')
                     // console.log(input.value)
-                    const { input1 } = this.refs // 因为我们给虚拟DOM打的标识ref所以我们拿到的是虚拟DOM的标签？不对，我们收集的是虚拟DOM转换成真实DOM的之后的标签哦。
-                    alert(input1.value)
-                    console.log(input1)
+                    console.log(this.refs)
+                    const { random_string } = this.refs // 因为我们给虚拟DOM打的标识ref所以我们拿到的是虚拟DOM的标签？不对，我们收集的是虚拟DOM转换成真实DOM的之后的标签哦。
+                    // 这里用到了解构，如果不熟悉可以复习一下；https://chinese.freecodecamp.org/news/array-and-object-destructuring-in-javascript/
+                    alert(random_string.value)
+                    console.log(random_string)
                 }
                 showData2 = () => {
                     const { input2 } = this.refs
@@ -41,7 +43,7 @@
                     return (
                         <div>
                             <input
-                                ref="input1" // 组件中的标签可以用ref来标识自己,以后不用用id了，这个地方帮我们做
+                                ref="random_string" // 组件中的标签可以用ref来标识自己,以后不用用id了，这个地方帮我们做
                                 type="text"
                                 placeholder="点击按钮提示数据"
                             />
