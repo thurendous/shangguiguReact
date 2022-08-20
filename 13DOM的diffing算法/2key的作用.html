@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>key的作用</title>
+    </head>
+    <body>
+        <div id="person"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            /*
+            1）react以及vue中的key的作用是什么？（内部原理是啥呢么？）
+            2）为什么在写入key的时候不要写入
+
+            虚拟DOM中的key的作用：
+            1.简单地说：key是虚拟DOM对象的标识。在更新显示时候的key七折很重要的作用。
+            2.详细说：当状态中的数据发生变化时候，react会根据新数据，生成新的虚拟DOM
+
+            随后react对新的虚拟DOM和旧的虚拟DOM进行一个diff比较。比较规则如下：
+            a.若旧的虚拟DOM中内容没变，直接使用之前的真实DOM
+            b.若虚拟DOM中内容变了，则生成新的真实DOm。随后替换掉页面之前的真实DOM
+
+
+            使用index作为key的时候，可能会引发问题：
+                1. 若队数据进行：逆序添加，逆序删除等会破坏顺序操作
+                    会产生没有必要的真实DOM更新 ===> 界面效果没问题但是效率低
+                2. 如果在结构中还包含了输入类的DOm：会场生错误的DMO的更新
+                    会产生错误的DOM更新 ===> 界面有问题
+                3. 开发中如何选择key
+                    1.最好使用每条数据唯一标识的为key
+                    2.如果确定只是简单的展示数据，用index也是可以的。不推荐啊
+
+
+            */
+
+            class Person extends React.Component {
+                state = {
+                    persons: [
+                        {
+                            id: 11,
+                            name: 'John',
+                            age: 18,
+                        },
+                        {
+                            id: 12,
+                            name: 'li',
+                            age: 19,
+                        },
+                    ],
+                }
+
+                add = () => {
+                    const { persons } = this.state
+                    const p = {
+                        id: persons.length + 1,
+                        name: 'xiaowang',
+                        age: 34,
+                    }
+                    this.setState({ persons: [p, ...persons] })
+                }
+                render() {
+                    return (
+                        <div>
+                            <h2>使用index（索引值）作为key</h2>
+                            <button onClick={this.add}>添加一个小王</button>
+                            <ul>
+                                {this.state.persons.map((person, index) => {
+                                    console.log(index)
+                                    return (
+                                        <li key={index}>
+                                            {person.name}, {person.age}
+                                            <input type="text" />
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                            <hr />
+                            <hr />
+                            <h3>使用id（数据的唯一标识）</h3>
+                            <ul>
+                                {this.state.persons.map((personObj) => {
+                                    return (
+                                        <li key={personObj.id}>
+                                            {personObj.name}---{personObj.age}
+                                            <input type="text" />
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Person />, document.getElementById('person'))
+        </script>
+    </body>
+</html>

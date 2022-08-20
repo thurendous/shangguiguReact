@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hello_react</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            class Time extends React.Component {
+                state = { date: new Date() }
+
+                componentDidMount() {
+                    setInterval(() => {
+                        this.setState({
+                            date: new Date(),
+                        })
+                    }, 1000)
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1>hello</h1>
+                            <input type="text" />
+                            {/* 这里的span会更新的，所以内部的‘现在是’三个字也会刷新，事件也会刷新，但是别的部分不会刷新 */}
+                            <span>
+                                现在是：
+                                {this.state.date.toTimeString()}
+                                <input type="text" />{' '}
+                                {/*这个地方这么写了，算法也会查出来这里的不同，然后就不更新内部的节点了*/}
+                            </span>
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Time />, document.getElementById('test'))
+        </script>
+    </body>
+</html>

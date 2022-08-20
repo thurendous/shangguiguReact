@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>3react生命周期新</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/17.0.1/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/17.0.1/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+        <script type="text/babel">
+            // 创建组件
+            class Count extends React.Component {
+                // 所有的will的钩子都要加上UNSAFE的下划线,除了componentWIllUnmount
+                // 官方说法是：UNSAFE的生命周期的钩子即将过时了，避免使用
+                // componentWillMount, componentWillReceiveProps, componentWillUpdate 这三个在react的未来版本中可能会出现bug。所以要提高使用这三个的成本。
+
+                // 初始化状态
+                constructor(props) {
+                    super(props)
+                    console.log('Count - 1构造器')
+                    this.state = { count: 0 }
+                }
+
+                add = () => {
+                    const { count } = this.state
+                    this.setState({ count: count + 1 })
+                }
+                death = () => {
+                    ReactDOM.unmountComponentAtNode(
+                        document.getElementById('test')
+                    )
+                    console.log('Count - componentWIllUnmount')
+                }
+
+                force = () => {
+                    this.forceUpdate()
+                }
+
+                // 若state的值在任何时候都取决于props，那么可以用这个 -》 这货没啥意义，不用纠结
+                static getDerivedStateFromProps(props, state) {
+                    console.log('getDerivedStateFromProps', props)
+                    // return { count: 109 } // 这里如此写了一个state的话，这个state就无法修改而成为了一个固定的1008值
+                    return null //也可以是props，如果如此的话， 这个就是把接受的props当成了状态用。那么，这是一个罕见的用力，state的值在任何时候都取决于props，了解即可哈。为何值会变成了props的值{count: 199}？因为生命周期中，这个货拦在中间。他决定了state的值就是props了。
+                }
+
+                getSnapshotBeforeUpdate() {
+                    console.log('getSnapshotBeforeUpdate')
+                    return 'atguigu'
+                    // 任何值都可以是snapshot，这个快照就是在状态更新之前，留念一波作为纪念。以后继续使用这个。
+                }
+
+                // 组件挂在完毕的钩子
+                componentDidMount() {
+                    console.log('Count - last - componentDidMount')
+                }
+
+                // 控制画面更新的render 的阀门（如果你不写这个，会默认给你附加一个返回值为真的一个阀门）
+                // 呼叫的顺序是这样的：shouldComponentUpdate -> componentWillUpdate -> render 的顺序
+                shouldComponentUpdate() {
+                    console.log('Count - shouldComponentUpdate')
+                    return true // 这里如果是返回一个值false或者不写返回值，那么画面不会更新，如果写的话一定要写这个true才会让界面更新
+                }
+
+                // 组件更新完毕的钩子
+                componentDidUpdate(preprops, prestate, snapshotValue) {
+                    console.log(
+                        'Count - componentDidUpdate',
+                        preprops,
+                        prestate,
+                        snapshotValue
+                    ) // 这里的话，componentDidUpdate可以传入2个值，这两个值是preprops和prestate, 先前的状态的东西
+                }
+
+                render() {
+                    console.log('Count - render')
+                    const { count } = this.state
+                    return (
+                        <div>
+                            <h2>当前求和为？{count}</h2>
+                            <button onClick={this.add}>点我加1</button>
+                            <button onClick={this.death}>删除一切</button>
+                            <button onClick={this.force}>
+                                不更改任何东西强制更新
+                            </button>
+                        </div>
+                    )
+                }
+            }
+
+            /*
+            旧生命周期废除了三个钩子：componentWillMount, componentWillReceiveProps, componentWillUpdate, 而新的生命周期加上了两个新的钩子，这两个新的钩子特别罕见，所以没事，无视了。
+            */
+
+            ReactDOM.render(
+                <Count name="timn" count={199} />,
+                document.getElementById('test')
+            )
+        </script>
+    </body>
+</html>

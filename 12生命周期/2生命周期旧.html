@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>2react生命周期</title>
+    </head>
+    <body>
+        <div id="test"></div>
+
+        <script
+            type="text/javascript"
+            src="../js/react.development.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="../js/react-dom.development.js"
+        ></script>
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel">
+            // 创建组件
+            class Count extends React.Component {
+                // 最开始的画面的渲染时候，调用的流程，按照这个顺序来的,
+                // Count - 1构造器
+                // Count - 2componentWillMount
+                // Count - render
+                // Count - last - componentDidMoun
+
+                // 点了seState的按键，让画面更新的话,按照这个顺序来
+                // Count - shouldComponentUpdate
+                // Count - componentWillUpdate
+                // Count - render
+                // Count - componentDidUpdate
+
+                // 强制更新的forceUpdate() -> 不想让状态进行任何修改但是想要更新一波
+                //
+
+                // 初始化状态
+                constructor(props) {
+                    super(props)
+                    console.log('Count - 1构造器')
+                    this.state = { count: 0 }
+                }
+
+                // 组件挂在完毕的钩子
+                componentWillMount() {
+                    console.log('Count - 2componentWillMount')
+                }
+
+                // 组件挂在完毕的钩子
+                componentDidMount() {
+                    console.log('Count - last - componentDidMount')
+                }
+
+                // 控制画面更新的render 的阀门（如果你不写这个，会默认给你附加一个返回值为真的一个阀门）
+                // 呼叫的顺序是这样的：shouldComponentUpdate -> componentWillUpdate -> render 的顺序
+                shouldComponentUpdate() {
+                    console.log('Count - shouldComponentUpdate')
+                    return true // 这里如果是返回一个值false或者不写返回值，那么画面不会更新，如果写的话一定要写这个true才会让界面更新
+                }
+
+                // 组件将要更新的钩子
+                componentWillUpdate() {
+                    console.log('Count - componentWillUpdate')
+                }
+
+                // 组件更新完毕的钩子
+                componentDidUpdate() {
+                    console.log('Count - componentDidUpdate')
+                }
+
+                add = () => {
+                    const { count } = this.state
+                    this.setState({ count: count + 1 })
+                }
+                death = () => {
+                    ReactDOM.unmountComponentAtNode(
+                        document.getElementById('test')
+                    )
+                    console.log('Count - componentWIllUnmount')
+                }
+
+                render() {
+                    console.log('Count - render')
+                    const { count } = this.state
+                    return (
+                        <div>
+                            <h2>当前求和为？{count}</h2>
+                            <button onClick={this.add}>点我加1</button>
+                            <button onClick={this.death}>删除一切</button>
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render(<Count />, document.getElementById('test'))
+        </script>
+    </body>
+</html>
